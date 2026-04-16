@@ -69,7 +69,7 @@ mv ~/Downloads/gk /usr/local/bin/gk
 
 ---
 
-#### Unix / Ubuntu
+#### Linux / Ubuntu
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/gitkraken-cli)
 
