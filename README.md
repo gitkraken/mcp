@@ -1,14 +1,13 @@
 # GitKraken MCP Server
 
-The GitKraken MCP Server turns your AI assistant into a context-aware development partner by connecting it to git history, branches, issues, pull requests, and multi-repo workflows through GitKraken. It works with all the providers you would expect from the GitKraken software suite such as GitHub, GitLab, Azure DevOps, Bitbucket, Jira, Linear and more.
+The GitKraken MCP Server turns your AI assistant into a context-aware development partner by connecting it to git history, branches, issues, pull requests, and multi-repo workflows through GitKraken. It works with all the providers you would expect from the GitKraken software suite such as GitHub, GitLab, Azure DevOps, Bitbucket, Jira and more. Built by the team behind GitLens, the Git tool that 48 million developers chose, from first-time contributors to enterprise teams at Netflix and Adobe.
 
-The GitKraken MCP Server is available on macOS, Windows, and Linux systems.
+The GitKraken MCP Server is available on macOS, Windows, and Linux systems and works in VS Code, Cursor, Windsurf, Claude Desktop, Kiro, JetBrains, and more.
 
 If you want to read more about the MCP server, you can check out the [introductory blog post](https://www.gitkraken.com/blog/introducing-gitkraken-mcp).
 
 ## Table of Contents
 
-- [Documentation](#documentation)
 - [Tools](#tools)
 - [Prompts](#prompts)
 - [Installation](#installation)
