@@ -124,4 +124,4 @@ If you run into any issues, double check if we have the problem covered in our [
 
 You can give feedback and report bugs on GitHub by [submitting an issue](https://github.com/gitkraken/gk-cli/issues/new?template=bug_report.yml).
 
-If you would like to reach out to Support directly, you can [submit a ticket](https://help.gitkraken.com/cli/cli-contact-support/?product_s_=GitKraken%20CLI)
+If you would like to reach out to Support directly, you can [submit a ticket](https://gitkraken.com/contact)
