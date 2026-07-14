@@ -1,0 +1,621 @@
+[
+  {
+    "name": "git_add_or_commit",
+    "description": "Add file contents to the index (git add <pathspec>) OR record changes to the repository (git commit -m <message> [files...]). Use the 'action' parameter to specify which action to perform.",
+    "arguments": [
+      {
+        "name": "action",
+        "type": "string",
+        "desc": "The action to perform: 'add' or 'commit'"
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git add or commit in"
+      },
+      {
+        "name": "files",
+        "type": "array",
+        "desc": "Optional array of files to add or commit. If omitted, all files are added or all staged changes are committed."
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "desc": "The commit message (required if action is 'commit')"
+      }
+    ]
+  },
+  {
+    "name": "git_blame",
+    "description": "Show what revision and author last modified each line of a file (git blame <file>).",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git blame in"
+      },
+      {
+        "name": "file",
+        "type": "string",
+        "desc": "The file to blame"
+      }
+    ]
+  },
+  {
+    "name": "git_branch",
+    "description": "List or create branches (git branch).",
+    "arguments": [
+      {
+        "name": "action",
+        "type": "string",
+        "desc": "Git branch action to be executed"
+      },
+      {
+        "name": "branch_name",
+        "type": "string",
+        "desc": "(Optional) Name of the branch to create or delete"
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git branch in"
+      }
+    ]
+  },
+  {
+    "name": "git_checkout",
+    "description": "Switch branches or restore working tree files (git checkout <branch>).",
+    "arguments": [
+      {
+        "name": "branch",
+        "type": "string",
+        "desc": "The branch to checkout. This must be a valid branch name without spaces"
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git checkout in"
+      }
+    ]
+  },
+  {
+    "name": "git_fetch",
+    "description": "Download objects and refs from another repository (git fetch).",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git fetch in"
+      }
+    ]
+  },
+  {
+    "name": "git_log_or_diff",
+    "description": "Show commit logs or changes between commits (git log --oneline or git diff).",
+    "arguments": [
+      {
+        "name": "action",
+        "type": "string",
+        "desc": "The action to perform: 'log' for commit logs or 'diff' for changes"
+      },
+      {
+        "name": "authors",
+        "type": "array",
+        "desc": "Optional array of author names or emails to filter commits by (only applies to 'log' action)"
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run the command in"
+      },
+      {
+        "name": "revision_range",
+        "type": "string",
+        "desc": "Optional revision range (e.g., 'HEAD', 'main..feature', 'abc123', 'HEAD~5..HEAD'). For 'diff' action, shows differences for the specified range. For 'log' action, shows commits in the range. Defaults to HEAD."
+      },
+      {
+        "name": "since",
+        "type": "string",
+        "desc": "Optional date/timestamp/relative time to show commits after (e.g., '2024-01-01', '2 weeks ago', 'yesterday', '1 hour ago', '3 days ago'). Only applies to 'log' action."
+      },
+      {
+        "name": "until",
+        "type": "string",
+        "desc": "Optional date/timestamp/relative time to show commits before (e.g., '2024-12-31', '1 week ago', 'today', 'yesterday', '2 hours ago'). Only applies to 'log' action."
+      }
+    ]
+  },
+  {
+    "name": "git_pull",
+    "description": "Fetch from and integrate with another repository or a local branch (git pull).",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git pull in"
+      }
+    ]
+  },
+  {
+    "name": "git_push",
+    "description": "Update remote refs along with associated objects (git push).",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git push in"
+      }
+    ]
+  },
+  {
+    "name": "git_stash",
+    "description": "Stash the changes in a dirty working directory (git stash).",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git stash in"
+      },
+      {
+        "name": "include_untracked",
+        "type": "boolean",
+        "desc": "When true, include untracked files in the stash."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "desc": "Optional name for the stash (used as the stash message)"
+      },
+      {
+        "name": "staged_only",
+        "type": "boolean",
+        "desc": "When true, stash only the currently staged changes and leave unstaged work untouched."
+      }
+    ]
+  },
+  {
+    "name": "git_status",
+    "description": "Show the working tree status (git status), will open a UI if client supports it.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      }
+    ]
+  },
+  {
+    "name": "git_worktree",
+    "description": "List or add git worktrees (git worktree <action>).",
+    "arguments": [
+      {
+        "name": "action",
+        "type": "string",
+        "desc": "Git worktree action to be executed"
+      },
+      {
+        "name": "branch",
+        "type": "string",
+        "desc": "(Optional) Existing branch for the new worktree (used for add)"
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git worktree in"
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "desc": "(Optional) Path for the worktree (required for add)"
+      }
+    ]
+  },
+  {
+    "name": "gitkraken_workspace_list",
+    "description": "Lists all Gitkraken workspaces",
+    "arguments": []
+  },
+  {
+    "name": "gitlens_commit_composer",
+    "description": "Gitlens Commit Composer. Organize your changes into well-formed commits with clear messages and descriptions. Useful for breaking large changes into smaller commits.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      },
+      {
+        "name": "instructions",
+        "type": "string",
+        "desc": "OPTIONAL. Use this ONLY if the user explicitly provided specific requirements about how commits should be organized, what commit messages should say, or particular commit structure preferences. Do NOT use this parameter unless you are 100% certain about the user's intentions. Examples: 'use conventional commits', 'prefix each commit with JIRA-123', 'keep commit messages under 50 characters'."
+      }
+    ]
+  },
+  {
+    "name": "gitlens_launchpad",
+    "description": "Gitlens Launchpad. Gets your open pull requests prioritized by what needs attention: ready to merge, has conflicts, awaiting review, etc. Helpful for checking todos, outstanding tasks, or deciding what to work on next.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      }
+    ]
+  },
+  {
+    "name": "gitlens_start_review",
+    "description": "Gitlens Start Review. Creates a dedicated worktree and reviews your PR with an AI agent.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      },
+      {
+        "name": "instructions",
+        "type": "string",
+        "desc": "OPTIONAL. Use this ONLY if the user explicitly provided specific requirements about the review focus, review criteria, or what aspects to check. Do NOT use this parameter unless you are 100% certain about the user's intentions. Examples: 'focus on security issues', 'check for performance regressions', 'review only the authentication logic'."
+      },
+      {
+        "name": "pr_url",
+        "type": "string",
+        "desc": "URL of the PR to start review."
+      }
+    ]
+  },
+  {
+    "name": "gitlens_start_work",
+    "description": "Gitlens Start Work. Creates a work based on an issue. This tool will create a branch and link it with the issue, keeping context visible throughout your work.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      },
+      {
+        "name": "instructions",
+        "type": "string",
+        "desc": "OPTIONAL. Use this ONLY if the user explicitly provided specific requirements about the implementation approach, or additional context to supplement the issue. Do NOT use this parameter unless you are 100% certain about the user's intentions."
+      },
+      {
+        "name": "issue_url",
+        "type": "string",
+        "desc": "URL of the issue to start work on."
+      }
+    ]
+  },
+  {
+    "name": "issues_add_comment",
+    "description": "Add a comment to an issue",
+    "arguments": [
+      {
+        "name": "azure_organization",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps organization name. Required for Azure DevOps"
+      },
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name. Required for Azure DevOps"
+      },
+      {
+        "name": "comment",
+        "type": "string",
+        "desc": "The text content of the comment"
+      },
+      {
+        "name": "issue_id",
+        "type": "string",
+        "desc": "The ID of the issue to comment on"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the issue provider"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Repository name. This is required for GitHub and GitLab"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Organization name. This is required for GitHub and GitLab"
+      }
+    ]
+  },
+  {
+    "name": "issues_assigned_to_me",
+    "description": "Fetch issues assigned to the user",
+    "arguments": [
+      {
+        "name": "azure_organization",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps organization name. Required for Azure DevOps"
+      },
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name. Required for Azure DevOps"
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "desc": "Optional parameter to specify the page number, defaults to 1"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the issue provider"
+      }
+    ]
+  },
+  {
+    "name": "issues_get_detail",
+    "description": "Retrieve detailed information about a specific issue by its unique ID. For Jira Epics, the response includes a childIssues array containing all issues linked to the epic.",
+    "arguments": [
+      {
+        "name": "azure_organization",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps organization name. Required for Azure DevOps"
+      },
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name. Required for Azure DevOps"
+      },
+      {
+        "name": "issue_id",
+        "type": "string",
+        "desc": "The Number or ID of the issue to retrieve. Supported formats include GitHub/GitLab numeric IDs (e.g., 123 or #123), Jira keys (e.g., PROJ-123), Linear issue IDs (UUID format), etc."
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the issue provider"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Repository name. This is required for GitHub and GitLab"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Organization name. This is required for GitHub and GitLab"
+      }
+    ]
+  },
+  {
+    "name": "pull_request_assigned_to_me",
+    "description": "Search pull requests where you are the assignee, author, or reviewer",
+    "arguments": [
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "is_closed",
+        "type": "boolean",
+        "desc": "Set to true if you want to search for closed pull requests"
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "desc": "Optional parameter to specify the page number, defaults to 1"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the git provider"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Set the repository name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Set the organization name of the pull request. Required for Azure DevOps and Bitbucket"
+      }
+    ]
+  },
+  {
+    "name": "pull_request_create",
+    "description": "Create a new pull request",
+    "arguments": [
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "body",
+        "type": "string",
+        "desc": "The body/description of the pull request"
+      },
+      {
+        "name": "is_draft",
+        "type": "boolean",
+        "desc": "Create as draft pull request"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the git provider"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Set the repository name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Set the organization name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "source_branch",
+        "type": "string",
+        "desc": "Source branch from which the pull request will be created"
+      },
+      {
+        "name": "target_branch",
+        "type": "string",
+        "desc": "Target branch where the pull request will be merged"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "desc": "The title of the pull request"
+      }
+    ]
+  },
+  {
+    "name": "pull_request_create_review",
+    "description": "Create a review for a pull request",
+    "arguments": [
+      {
+        "name": "approve",
+        "type": "boolean",
+        "desc": "Set to true if you want to approve the pull request"
+      },
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the git provider"
+      },
+      {
+        "name": "pull_request_id",
+        "type": "string",
+        "desc": "ID of the pull request to create the review for"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Set the repository name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Set the organization name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "review",
+        "type": "string",
+        "desc": "Comment to add to the pull request review"
+      }
+    ]
+  },
+  {
+    "name": "pull_request_get_comments",
+    "description": "Get all the comments in a pull requests",
+    "arguments": [
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the git provider"
+      },
+      {
+        "name": "pull_request_id",
+        "type": "string",
+        "desc": "ID of the pull request to add the comment to"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Set the repository name of the pull request"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Set the organization name of the pull request"
+      }
+    ]
+  },
+  {
+    "name": "pull_request_get_detail",
+    "description": "Get an specific pull request",
+    "arguments": [
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the git provider"
+      },
+      {
+        "name": "pull_request_files",
+        "type": "boolean",
+        "desc": "Set to true if you want to retrieve the files changed in the pull request. Not supported by Azure DevOps."
+      },
+      {
+        "name": "pull_request_id",
+        "type": "string",
+        "desc": "ID of the pull request to retrieve"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Set the repository name of the pull request"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Set the organization name of the pull request"
+      }
+    ]
+  },
+  {
+    "name": "repository_get_file_content",
+    "description": "Get file content from a repository",
+    "arguments": [
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "file_path",
+        "type": "string",
+        "desc": "File path to retrieve from the repository"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the git provider"
+      },
+      {
+        "name": "ref",
+        "type": "string",
+        "desc": "Set the branch, tag, or commit SHA to retrieve the file from"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Set the repository name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Set the organization name of the pull request. Required for Azure DevOps and Bitbucket"
+      }
+    ]
+  }
+]

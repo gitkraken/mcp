@@ -18,6 +18,12 @@ If you want to read more about the MCP server, you can check out the [introducto
 
 Tools are the primary purpose of the MCP server. They are a set of finely curated commands that AI can use to interact with GitKraken without exploding your context. Some of those tools include: `issues_assigned_to_me`, `gitlens_commit_composer`, and `pull_request_create_review`. A full list of tools can be found in the GitKraken Help Center's [Tools Reference](https://help.gitkraken.com/mcp/mcp-tools-reference/).
 
+The repository also includes a Docker MCP Catalog-compatible [`tools.json`](tools.json). To refresh it from the local GitKraken CLI, run:
+
+```bash
+node scripts/generate-tools-json.mjs
+```
+
 ## Prompts
 
 Prompts are the secondary purpose of the MCP server. They are a set of carefully crafted instructions that AI can use to understand how to use the tools, when to use them, and what information to provide when using them. A full list of prompts can be found in the GitKraken Help Center's [Prompts Reference](https://help.gitkraken.com/mcp/mcp-prompts-reference/).
