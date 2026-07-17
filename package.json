@@ -1,0 +1,18 @@
+{
+  "name": "gitkraken-mcp-catalog",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Docker MCP Catalog packaging and validation for the GitKraken MCP server",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate:tools": "node scripts/generate-tools-json.mjs",
+    "check:tools": "node scripts/check-tools-json.mjs",
+    "smoke:mcp": "node scripts/smoke-mcp.mjs"
+  },
+  "dependencies": {
+    "@gitkraken/gk": "3.1.70"
+  }
+}

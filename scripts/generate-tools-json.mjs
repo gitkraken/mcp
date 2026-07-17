@@ -5,8 +5,10 @@ import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const outputPath = resolve(process.argv[2] ?? "tools.json");
+const command = parseCommand();
+const deniedToolNames = new Set(["app_tool_box", "app_update_user_preferences"]);
 
-const output = execFileSync("gk", ["mcp", "--list-tools"], {
+const output = execFileSync(command[0], command.slice(1), {
   encoding: "utf8",
   stdio: ["ignore", "pipe", "inherit"],
 });
@@ -28,6 +30,9 @@ for (const line of output.split(/\r?\n/)) {
   const toolMatch = line.match(/^Tool: (.+)$/);
   if (toolMatch) {
     finishTool();
+    if (deniedToolNames.has(toolMatch[1])) {
+      continue;
+    }
     currentTool = {
       name: toolMatch[1],
       description: "",
@@ -72,3 +77,19 @@ if (tools.length === 0) {
 
 writeFileSync(outputPath, `${JSON.stringify(tools, null, 2)}\n`);
 console.log(`Wrote ${tools.length} tools to ${outputPath}`);
+
+function parseCommand() {
+  if (process.env.TOOLS_COMMAND) {
+    const parsed = JSON.parse(process.env.TOOLS_COMMAND);
+    if (
+      !Array.isArray(parsed) ||
+      parsed.length === 0 ||
+      parsed.some((argument) => typeof argument !== "string" || argument.length === 0)
+    ) {
+      throw new Error("TOOLS_COMMAND must be a JSON array of nonempty strings.");
+    }
+    return parsed;
+  }
+
+  return [process.env.GK_BIN ?? "gk", "mcp", "--list-tools"];
+}

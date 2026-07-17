@@ -9,6 +9,11 @@
         "desc": "The action to perform: 'add' or 'commit'"
       },
       {
+        "name": "description",
+        "type": "string",
+        "desc": "Optional commit description/body (only applies when action is 'commit')"
+      },
+      {
         "name": "directory",
         "type": "string",
         "desc": "The directory to run git add or commit in"
@@ -79,6 +84,27 @@
     ]
   },
   {
+    "name": "git_commit_composer",
+    "description": "Show the commit composer for a repository, will open a UI if client supports it.",
+    "arguments": [
+      {
+        "name": "custom_instructions",
+        "type": "string",
+        "desc": "Free-form guidance for the AI commit composer. Only meaningful when 'direction' is 'custom'."
+      },
+      {
+        "name": "direction",
+        "type": "string",
+        "desc": "Initial grouping preset for the composer. 'auto' lets the AI choose; 'area' groups by codebase area / subsystem; 'type' groups by conventional commit type; 'custom' uses the supplied 'custom_instructions' text. Defaults to 'auto'."
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      }
+    ]
+  },
+  {
     "name": "git_fetch",
     "description": "Download objects and refs from another repository (git fetch).",
     "arguments": [
@@ -86,6 +112,17 @@
         "name": "directory",
         "type": "string",
         "desc": "The directory to run git fetch in"
+      }
+    ]
+  },
+  {
+    "name": "git_graph",
+    "description": "Show the commit graph for a repository (git log --graph), will open a UI if client supports it.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
       }
     ]
   },
@@ -144,6 +181,22 @@
         "name": "directory",
         "type": "string",
         "desc": "The directory to run git push in"
+      }
+    ]
+  },
+  {
+    "name": "git_resolve",
+    "description": "Show the conflict resolution UI for a repository, will open a UI if client supports it.",
+    "arguments": [
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "Path of the working directory."
+      },
+      {
+        "name": "instructions",
+        "type": "string",
+        "desc": "Optional guidance for the AI conflict resolution flow."
       }
     ]
   },
@@ -214,22 +267,6 @@
     "name": "gitkraken_workspace_list",
     "description": "Lists all Gitkraken workspaces",
     "arguments": []
-  },
-  {
-    "name": "gitlens_commit_composer",
-    "description": "Gitlens Commit Composer. Organize your changes into well-formed commits with clear messages and descriptions. Useful for breaking large changes into smaller commits.",
-    "arguments": [
-      {
-        "name": "directory",
-        "type": "string",
-        "desc": "Path of the working directory."
-      },
-      {
-        "name": "instructions",
-        "type": "string",
-        "desc": "OPTIONAL. Use this ONLY if the user explicitly provided specific requirements about how commits should be organized, what commit messages should say, or particular commit structure preferences. Do NOT use this parameter unless you are 100% certain about the user's intentions. Examples: 'use conventional commits', 'prefix each commit with JIRA-123', 'keep commit messages under 50 characters'."
-      }
-    ]
   },
   {
     "name": "gitlens_launchpad",
@@ -327,8 +364,13 @@
   },
   {
     "name": "issues_assigned_to_me",
-    "description": "Fetch issues assigned to the user",
+    "description": "Fetch issues assigned to the user. Set assigned_to_me=false to broaden the result to all visible issues (so the caller can then filter client-side). Narrow results server-side with repository_name/repository_organization (GitHub), project/issue_type (Jira), or is_closed.",
     "arguments": [
+      {
+        "name": "assigned_to_me",
+        "type": "boolean",
+        "desc": "Whether to limit results to issues assigned to you. Defaults to true."
+      },
       {
         "name": "azure_organization",
         "type": "string",
@@ -340,14 +382,95 @@
         "desc": "Optionally set the Azure DevOps project name. Required for Azure DevOps"
       },
       {
+        "name": "fields",
+        "type": "string",
+        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: id, url, number, provider, repoName, repoOwner, repoHost, project, title, description, issueType, status, assignees, comments, childIssues."
+      },
+      {
+        "name": "is_closed",
+        "type": "boolean",
+        "desc": "Set to true to also include closed/done issues. Defaults to false."
+      },
+      {
+        "name": "issue_type",
+        "type": "string",
+        "desc": "Issue type. Jira only (e.g. Bug, Story, Task)."
+      },
+      {
         "name": "page",
         "type": "number",
         "desc": "Optional parameter to specify the page number, defaults to 1"
       },
       {
+        "name": "project",
+        "type": "string",
+        "desc": "Project key. Jira only (e.g. GKDEV)."
+      },
+      {
         "name": "provider",
         "type": "string",
         "desc": "Specify the issue provider"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Repository name. GitHub only; must be combined with repository_organization."
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Organization name. GitHub only."
+      }
+    ]
+  },
+  {
+    "name": "issues_create",
+    "description": "Create a new issue. For Jira, repository_name is the project key. For Linear, repository_organization is the team UUID, key, or name.",
+    "arguments": [
+      {
+        "name": "assignees",
+        "type": "array",
+        "desc": "Optional list of assignees. GitHub: usernames; GitLab: user IDs; Jira/Linear/Azure: first entry is used"
+      },
+      {
+        "name": "azure_organization",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps organization name. Required for Azure DevOps"
+      },
+      {
+        "name": "azure_project",
+        "type": "string",
+        "desc": "Optionally set the Azure DevOps project name. Required for Azure DevOps"
+      },
+      {
+        "name": "body",
+        "type": "string",
+        "desc": "The body/description of the issue (markdown supported where the provider allows)"
+      },
+      {
+        "name": "labels",
+        "type": "array",
+        "desc": "Optional list of label names to apply"
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "desc": "Specify the issue provider"
+      },
+      {
+        "name": "repository_name",
+        "type": "string",
+        "desc": "Repository name. Required for GitHub/GitLab; for Jira this is the project key"
+      },
+      {
+        "name": "repository_organization",
+        "type": "string",
+        "desc": "Organization name. Required for GitHub/GitLab; for Linear use as team identifier"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "desc": "The title of the issue"
       }
     ]
   },
@@ -389,12 +512,17 @@
   },
   {
     "name": "pull_request_assigned_to_me",
-    "description": "Search pull requests where you are the assignee, author, or reviewer",
+    "description": "Search pull requests where you are the author or assignee. Set reviewer to true to also include pull requests where you are a requested reviewer (github and gitlab only).",
     "arguments": [
       {
         "name": "azure_project",
         "type": "string",
         "desc": "Optionally set the Azure DevOps project name of the pull request. Required for Azure DevOps"
+      },
+      {
+        "name": "fields",
+        "type": "string",
+        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: timestampCreatedAt, title, description, url, state, owner, repoName, repoHost, provider, id, files, clone, number, merged, draft, approved, authoredByMe, headBranch, baseBranch, headRepo."
       },
       {
         "name": "is_closed",
@@ -420,6 +548,16 @@
         "name": "repository_organization",
         "type": "string",
         "desc": "Set the organization name of the pull request. Required for Azure DevOps and Bitbucket"
+      },
+      {
+        "name": "reviewer",
+        "type": "boolean",
+        "desc": "Set to true to also include pull requests where you are a requested reviewer. Supported by github, github_enterprise, gitlab, gitlab_self_hosted; ignored for Azure DevOps and Bitbucket."
+      },
+      {
+        "name": "with_branches",
+        "type": "boolean",
+        "desc": "Include head/base branch names on each result. For GitHub this triggers an extra API call per PR, so leave off unless branches are needed."
       }
     ]
   },
@@ -427,6 +565,11 @@
     "name": "pull_request_create",
     "description": "Create a new pull request",
     "arguments": [
+      {
+        "name": "assign_to_me",
+        "type": "boolean",
+        "desc": "Assign the newly created pull request to the current authenticated user when supported by the provider"
+      },
       {
         "name": "azure_project",
         "type": "string",

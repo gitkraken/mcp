@@ -11,6 +11,7 @@ If you want to read more about the MCP server, you can check out the [introducto
 - [Tools](#tools)
 - [Prompts](#prompts)
 - [Installation](#installation)
+- [Docker](#docker)
 - [Troubleshooting](#troubleshooting)
 - [Support](#support)
 
@@ -18,11 +19,15 @@ If you want to read more about the MCP server, you can check out the [introducto
 
 Tools are the primary purpose of the MCP server. They are a set of finely curated commands that AI can use to interact with GitKraken without exploding your context. Some of those tools include: `issues_assigned_to_me`, `gitlens_commit_composer`, and `pull_request_create_review`. A full list of tools can be found in the GitKraken Help Center's [Tools Reference](https://help.gitkraken.com/mcp/mcp-tools-reference/).
 
-The repository also includes a Docker MCP Catalog-compatible [`tools.json`](tools.json). To refresh it from the local GitKraken CLI, run:
+The repository also includes a Docker MCP Catalog-compatible [`tools.json`](tools.json). To refresh it from an installed GitKraken CLI, run:
 
 ```bash
 node scripts/generate-tools-json.mjs
 ```
+
+Set `GK_BIN` when `gk` is not on `PATH`, or set `TOOLS_COMMAND` to a JSON
+command array when generating from a container. The generator intentionally
+excludes app-only tools that MCP agents must not call.
 
 ## Prompts
 
@@ -53,6 +58,43 @@ The installation process details may vary by AI tool, but the general gist is th
   }
 }
 ```
+
+## Docker
+
+This repository includes auth-independent Docker packaging for the local MCP
+server. The image can list tools and run local Git tools against explicitly
+mounted repositories. Cloud workspaces, issues, pull requests, and provider
+operations still require a supported non-interactive GitKraken authentication
+contract.
+
+Build the image:
+
+```bash
+docker build -t gitkraken-mcp:local .
+```
+
+List the tools without authenticating:
+
+```bash
+docker run --rm gitkraken-mcp:local --list-tools
+```
+
+Check `tools.json` against the clean image:
+
+```bash
+npm install
+TOOLS_COMMAND='["docker","run","--rm","gitkraken-mcp:local","--list-tools"]' npm run check:tools
+```
+
+The image runs as a non-root user and starts `gk mcp` over stdio. When using it
+through Docker MCP Toolkit, only mount repository paths that the server should
+be allowed to read and modify. Linked Git worktrees also require access to the
+external Git directory referenced by their `.git` file. A draft registry entry
+is available in
+[`docker/catalog/server.yaml.template`](docker/catalog/server.yaml.template).
+Copy that template and `tools.json` into `servers/gitkraken/` in a checkout of
+[`docker/mcp-registry`](https://github.com/docker/mcp-registry) when preparing
+the catalog pull request.
 
 ### CLI
 

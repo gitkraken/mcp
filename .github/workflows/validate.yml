@@ -1,0 +1,61 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --ignore-scripts
+
+      - name: Check scripts
+        run: |
+          node --check scripts/generate-tools-json.mjs
+          node --check scripts/check-tools-json.mjs
+          node --check scripts/smoke-mcp.mjs
+
+      - name: Build image
+        run: docker build -t gitkraken-mcp:test .
+
+      - name: Check catalog tool-list drift
+        env:
+          TOOLS_COMMAND: '["docker","run","--rm","gitkraken-mcp:test","--list-tools"]'
+        run: npm run check:tools
+
+      - name: Smoke test MCP and mounted repository access
+        run: |
+          repository="$(mktemp -d)"
+          git init "$repository"
+          export repository
+          MCP_COMMAND="$(node -e 'console.log(JSON.stringify(["docker", "run", "--rm", "-i", "--mount", `type=bind,source=${process.env.repository},target=/workspace/repo`, "gitkraken-mcp:test"]))')"
+          MCP_COMMAND="$MCP_COMMAND" MCP_SMOKE_REPOSITORY=/workspace/repo npm run smoke:mcp
+
+  multiarch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build Linux architectures
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: false

@@ -1,0 +1,33 @@
+name: gitkraken
+image: mcp/gitkraken
+type: server
+meta:
+  category: devops
+  tags:
+    - git
+    - devops
+    - issues
+    - pull-requests
+about:
+  title: GitKraken
+  description: Work with Git repositories, issues, and pull requests through GitKraken.
+  icon: https://avatars.githubusercontent.com/u/92606490?v=4
+source:
+  project: https://github.com/gitkraken/mcp
+  commit: <PINNED_COMMIT_SHA>
+run:
+  volumes:
+    - "{{gitkraken.paths|volume|into}}"
+config:
+  description: Configure the local repository paths GitKraken is allowed to access.
+  parameters:
+    type: object
+    properties:
+      paths:
+        type: array
+        items:
+          type: string
+        default:
+          - /Users/local-test
+    required:
+      - paths
