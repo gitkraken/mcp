@@ -39,7 +39,8 @@ jobs:
       - name: Smoke test MCP and mounted repository access
         run: |
           repository="$(mktemp -d)"
-          git init "$repository"
+          git init -b main "$repository"
+          chmod 0755 "$repository"
           export repository
           MCP_COMMAND="$(node -e 'console.log(JSON.stringify(["docker", "run", "--rm", "-i", "--mount", `type=bind,source=${process.env.repository},target=/workspace/repo`, "gitkraken-mcp:test"]))')"
           MCP_COMMAND="$MCP_COMMAND" MCP_SMOKE_REPOSITORY=/workspace/repo npm run smoke:mcp

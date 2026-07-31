@@ -1,32 +1,17 @@
 [
   {
-    "name": "git_add_or_commit",
-    "description": "Add file contents to the index (git add <pathspec>) OR record changes to the repository (git commit -m <message> [files...]). Use the 'action' parameter to specify which action to perform.",
+    "name": "git_add",
+    "description": "Add file contents to the index (git add <pathspec>).",
     "arguments": [
-      {
-        "name": "action",
-        "type": "string",
-        "desc": "The action to perform: 'add' or 'commit'"
-      },
-      {
-        "name": "description",
-        "type": "string",
-        "desc": "Optional commit description/body (only applies when action is 'commit')"
-      },
       {
         "name": "directory",
         "type": "string",
-        "desc": "The directory to run git add or commit in"
+        "desc": "The directory to run git add in"
       },
       {
         "name": "files",
         "type": "array",
-        "desc": "Optional array of files to add or commit. If omitted, all files are added or all staged changes are committed."
-      },
-      {
-        "name": "message",
-        "type": "string",
-        "desc": "The commit message (required if action is 'commit')"
+        "desc": "Optional array of files to add. If omitted, all files are added."
       }
     ]
   },
@@ -80,6 +65,32 @@
         "name": "directory",
         "type": "string",
         "desc": "The directory to run git checkout in"
+      }
+    ]
+  },
+  {
+    "name": "git_commit",
+    "description": "Record changes to the repository (git commit -m <message> [files...]).",
+    "arguments": [
+      {
+        "name": "description",
+        "type": "string",
+        "desc": "Optional commit description/body"
+      },
+      {
+        "name": "directory",
+        "type": "string",
+        "desc": "The directory to run git commit in"
+      },
+      {
+        "name": "files",
+        "type": "array",
+        "desc": "Optional array of files to commit. If omitted, all staged changes are committed."
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "desc": "The commit message"
       }
     ]
   },
@@ -522,7 +533,7 @@
       {
         "name": "fields",
         "type": "string",
-        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: timestampCreatedAt, title, description, url, state, owner, repoName, repoHost, provider, id, files, clone, number, merged, draft, approved, authoredByMe, headBranch, baseBranch, headRepo."
+        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: timestampCreatedAt, mergedAt, closedAt, title, description, url, state, owner, repoName, repoHost, provider, id, files, clone, number, merged, draft, approved, authoredByMe, headBranch, baseBranch, headRepo."
       },
       {
         "name": "is_closed",
