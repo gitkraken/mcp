@@ -25,4 +25,4 @@ WORKDIR /workspace
 
 LABEL io.modelcontextprotocol.server.name="com.gitkraken/gk-cli"
 
-ENTRYPOINT ["/app/node_modules/.bin/gk", "mcp"]
+ENTRYPOINT ["/app/node_modules/.bin/gk", "mcp", "--host=docker"]
