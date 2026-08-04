@@ -19,3 +19,11 @@ To prepare a registry pull request:
 
 The `paths` parameter is intentionally required because the local Git tools
 must only receive access to repositories explicitly selected by the user.
+
+The image defaults to its built-in non-root UID/GID 1000:1000. Native Linux
+users whose repositories have a different owner can set the optional
+`container_user` parameter to the numeric value from `id -u`, or to the
+`<uid>:<gid>` pair from `id -u` and `id -g`. Leave it empty when the default
+identity already has access. A single configured identity applies to every
+mounted path, so all selected repositories must be writable by that identity.
+Do not recommend root or broad host permission changes as the normal setup.

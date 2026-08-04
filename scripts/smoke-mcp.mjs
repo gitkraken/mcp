@@ -59,6 +59,31 @@ try {
     }
   }
 
+  if (process.env.MCP_SMOKE_ADD_FILE !== undefined) {
+    const repository = process.env.MCP_SMOKE_REPOSITORY;
+    if (!repository) {
+      throw new Error("MCP_SMOKE_ADD_FILE requires MCP_SMOKE_REPOSITORY");
+    }
+    if (!tools.some((tool) => tool.name === "git_add")) {
+      throw new Error("tools/list did not advertise the required git_add tool");
+    }
+
+    const callResult = await rpc.request("tools/call", {
+      name: "git_add",
+      arguments: {
+        directory: repository,
+        files: [process.env.MCP_SMOKE_ADD_FILE],
+      },
+    });
+    assertObject(callResult, "git_add result");
+    if (callResult.isError === true) {
+      throw new Error(
+        `git_add could not stage ${JSON.stringify(process.env.MCP_SMOKE_ADD_FILE)}: ` +
+          formatToolContent(callResult.content),
+      );
+    }
+  }
+
   child.stdin.end();
   const outcome = await withTimeout(
     exit,

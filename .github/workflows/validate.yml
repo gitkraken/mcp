@@ -36,14 +36,22 @@ jobs:
           TOOLS_COMMAND: '["docker","run","--rm","gitkraken-mcp:test","--list-tools"]'
         run: npm run check:tools
 
-      - name: Smoke test MCP and mounted repository access
+      - name: Smoke test MCP mutation as the repository owner
         run: |
           repository="$(mktemp -d)"
           git init -b main "$repository"
-          chmod 0755 "$repository"
+          printf 'staged through MCP\n' > "$repository/mcp-mutation.txt"
+          uid="$(id -u)"
+          gid="$(id -g)"
           export repository
-          MCP_COMMAND="$(node -e 'console.log(JSON.stringify(["docker", "run", "--rm", "-i", "--mount", `type=bind,source=${process.env.repository},target=/workspace/repo`, "gitkraken-mcp:test"]))')"
-          MCP_COMMAND="$MCP_COMMAND" MCP_SMOKE_REPOSITORY=/workspace/repo npm run smoke:mcp
+          export uid
+          export gid
+          MCP_COMMAND="$(node -e 'console.log(JSON.stringify(["docker", "run", "--rm", "-i", "--user", `${process.env.uid}:${process.env.gid}`, "--mount", `type=bind,source=${process.env.repository},target=/workspace/repo`, "gitkraken-mcp:test"]))')"
+          MCP_COMMAND="$MCP_COMMAND" MCP_SMOKE_REPOSITORY=/workspace/repo MCP_SMOKE_ADD_FILE=mcp-mutation.txt npm run smoke:mcp
+          test "$(git -C "$repository" diff --cached --name-only)" = "mcp-mutation.txt"
+          test "$(stat -c '%u:%g' "$repository/.git/index")" = "$uid:$gid"
+          git -C "$repository" diff --cached --check
+          git -C "$repository" status --short
 
   multiarch:
     runs-on: ubuntu-latest

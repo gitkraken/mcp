@@ -18,8 +18,9 @@ source:
 run:
   volumes:
     - "{{gitkraken.paths|volume|into}}"
+  user: "{{gitkraken.container_user}}"
 config:
-  description: Configure the local repository paths GitKraken is allowed to access.
+  description: Configure the local repository paths GitKraken is allowed to access and, when needed on Linux, the numeric container identity used to access them.
   parameters:
     type: object
     properties:
@@ -29,5 +30,8 @@ config:
           type: string
         default:
           - /Users/local-test
+      container_user:
+        type: string
+        description: Optional numeric UID or UID:GID (for example, 1000 or 1000:1000) used to access bind-mounted repositories. Leave empty to use the image's built-in non-root user.
     required:
       - paths
