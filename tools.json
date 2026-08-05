@@ -359,7 +359,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider"
+        "desc": "Specify the issue provider. Default is JIRA"
       },
       {
         "name": "repository_name",
@@ -420,7 +420,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider"
+        "desc": "Specify the issue provider. Default is JIRA"
       },
       {
         "name": "repository_name",
@@ -466,7 +466,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider"
+        "desc": "Specify the issue provider. Default is JIRA"
       },
       {
         "name": "repository_name",
@@ -507,7 +507,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider"
+        "desc": "Specify the issue provider. Default is JIRA"
       },
       {
         "name": "repository_name",
@@ -548,7 +548,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider"
+        "desc": "Specify the git provider. Default is GITHUB"
       },
       {
         "name": "repository_name",
@@ -599,7 +599,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider"
+        "desc": "Specify the git provider. Default is GITHUB"
       },
       {
         "name": "repository_name",
@@ -645,7 +645,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider"
+        "desc": "Specify the git provider. Default is GITHUB"
       },
       {
         "name": "pull_request_id",
@@ -681,7 +681,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider"
+        "desc": "Specify the git provider. Default is GITHUB"
       },
       {
         "name": "pull_request_id",
@@ -712,7 +712,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider"
+        "desc": "Specify the git provider. Default is GITHUB"
       },
       {
         "name": "pull_request_files",
@@ -753,7 +753,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider"
+        "desc": "Specify the git provider. Default is GITHUB"
       },
       {
         "name": "ref",
