@@ -18,7 +18,7 @@ try {
     cwd: repositoryRoot,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
-    timeout: 60_000,
+    timeout: 300_000,
   });
 
   if (result.error) {

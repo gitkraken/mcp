@@ -19,15 +19,16 @@ If you want to read more about the MCP server, you can check out the [introducto
 
 Tools are the primary purpose of the MCP server. They are a set of finely curated commands that AI can use to interact with GitKraken without exploding your context. Some of those tools include: `issues_assigned_to_me`, `gitlens_commit_composer`, and `pull_request_create_review`. A full list of tools can be found in the GitKraken Help Center's [Tools Reference](https://help.gitkraken.com/mcp/mcp-tools-reference/).
 
-The repository also includes a Docker MCP Catalog-compatible [`tools.json`](tools.json). To refresh it from an installed GitKraken CLI, run:
+The repository also includes a Docker MCP Catalog-compatible [`tools.json`](tools.json). To refresh it from the GitKraken core version pinned in the Docker image, run:
 
 ```bash
-node scripts/generate-tools-json.mjs
+npm run generate:tools
 ```
 
-Set `GK_BIN` when `gk` is not on `PATH`, or set `TOOLS_COMMAND` to a JSON
-command array when generating from a container. The generator intentionally
-excludes app-only tools that MCP agents must not call.
+The generator builds the image before listing its tools, so Docker must be
+available. Set `TOOLS_COMMAND` to a JSON command array to use an existing image,
+or explicitly set `GK_BIN` to generate from a particular local executable. The
+generator intentionally excludes app-only tools that MCP agents must not call.
 
 ## Prompts
 

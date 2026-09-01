@@ -486,7 +486,7 @@
       {
         "name": "repository_name",
         "type": "string",
-        "desc": "Repository name. Required for GitHub/GitLab; for Jira this is the project key"
+        "desc": "Repository name. Required for GitHub/GitLab; required for Jira, where it is the project key (e.g. GKCLI)"
       },
       {
         "name": "repository_organization",

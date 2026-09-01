@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
-import { writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
+const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+const repositoryRoot = resolve(scriptDirectory, "..");
+const toolsImage = "gitkraken-mcp:tools-json";
+const pinnedCoreVersion = readPinnedCoreVersion();
 const outputPath = resolve(process.argv[2] ?? "tools.json");
 const command = parseCommand();
 const deniedToolNames = new Set(["app_tool_box", "app_update_user_preferences"]);
@@ -91,5 +96,48 @@ function parseCommand() {
     return parsed;
   }
 
-  return [process.env.GK_BIN ?? "gk", "mcp", "--list-tools"];
+  if (process.env.GK_BIN) {
+    assertCoreVersion(process.env.GK_BIN, ["version"]);
+    return [process.env.GK_BIN, "mcp", "--list-tools"];
+  }
+
+  console.log(`Building ${toolsImage} from the pinned GitKraken core...`);
+  execFileSync("docker", ["build", "--tag", toolsImage, repositoryRoot], {
+    cwd: repositoryRoot,
+    stdio: "inherit",
+  });
+  assertCoreVersion("docker", [
+    "run",
+    "--rm",
+    "--entrypoint",
+    "/app/node_modules/.bin/gk",
+    toolsImage,
+    "version",
+  ]);
+
+  return ["docker", "run", "--rm", toolsImage, "--list-tools"];
+}
+
+function readPinnedCoreVersion() {
+  const dockerfile = readFileSync(resolve(repositoryRoot, "Dockerfile"), "utf8");
+  const match = dockerfile.match(/^ARG GK_CORE_VERSION=([^\s]+)$/m);
+  if (!match) {
+    throw new Error("Dockerfile does not declare ARG GK_CORE_VERSION.");
+  }
+  return match[1];
+}
+
+function assertCoreVersion(file, args) {
+  const versionOutput = execFileSync(file, args, { encoding: "utf8" }).trim();
+  const match =
+    versionOutput.match(/CLI Core:\s*([^\s]+)/) ??
+    versionOutput.match(/^(\d+\.\d+\.\d+(?:-[^\s]+)?)/m);
+  const actualVersion = match?.[1];
+
+  if (actualVersion !== pinnedCoreVersion) {
+    throw new Error(
+      `Expected GitKraken core ${pinnedCoreVersion}, but ${file} reported ` +
+        `${actualVersion ?? JSON.stringify(versionOutput)}.`,
+    );
+  }
 }
