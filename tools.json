@@ -359,7 +359,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider. Default is JIRA"
+        "desc": "Specify the issue provider"
       },
       {
         "name": "repository_name",
@@ -375,8 +375,13 @@
   },
   {
     "name": "issues_assigned_to_me",
-    "description": "Fetch issues assigned to the user. Set assigned_to_me=false to broaden the result to all visible issues (so the caller can then filter client-side). Narrow results server-side with repository_name/repository_organization (GitHub), project/issue_type (Jira), or is_closed.",
+    "description": "Fetch issues assigned to the user. Set assigned_to_me=false to broaden the result to all visible issues. To filter server-side by assignee, set unassigned=true for issues with no assignee, or assigned_to=<user> for issues assigned to a specific person (assigned_to_me, unassigned and assigned_to are mutually exclusive). Narrow results further with repository_name/repository_organization (GitHub), project/issue_type (Jira), or is_closed.",
     "arguments": [
+      {
+        "name": "assigned_to",
+        "type": "string",
+        "desc": "List only issues assigned to this user (username/email/accountId, provider-dependent). Mutually exclusive with assigned_to_me and unassigned. Not supported by Trello/Linear."
+      },
       {
         "name": "assigned_to_me",
         "type": "boolean",
@@ -395,12 +400,12 @@
       {
         "name": "fields",
         "type": "string",
-        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: id, url, number, provider, repoName, repoOwner, repoHost, project, title, description, issueType, status, assignees, comments, childIssues."
+        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: id, url, number, provider, repoName, repoOwner, repoHost, project, title, description, issueType, status, updatedAt, assignees, comments, childIssues."
       },
       {
         "name": "is_closed",
         "type": "boolean",
-        "desc": "Set to true to also include closed/done issues. Defaults to false."
+        "desc": "Set to true to return closed/done issues instead of open issues. Defaults to false."
       },
       {
         "name": "issue_type",
@@ -420,7 +425,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider. Default is JIRA"
+        "desc": "Specify the issue provider"
       },
       {
         "name": "repository_name",
@@ -431,6 +436,11 @@
         "name": "repository_organization",
         "type": "string",
         "desc": "Organization name. GitHub only."
+      },
+      {
+        "name": "unassigned",
+        "type": "boolean",
+        "desc": "Set to true to list only unassigned issues. Mutually exclusive with assigned_to_me and assigned_to. Not supported by Trello."
       }
     ]
   },
@@ -459,6 +469,11 @@
         "desc": "The body/description of the issue (markdown supported where the provider allows)"
       },
       {
+        "name": "issue_type",
+        "type": "string",
+        "desc": "Issue type. Jira only (e.g. Bug, Story, Task); defaults to Task."
+      },
+      {
         "name": "labels",
         "type": "array",
         "desc": "Optional list of label names to apply"
@@ -466,7 +481,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider. Default is JIRA"
+        "desc": "Specify the issue provider"
       },
       {
         "name": "repository_name",
@@ -507,7 +522,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the issue provider. Default is JIRA"
+        "desc": "Specify the issue provider"
       },
       {
         "name": "repository_name",
@@ -533,7 +548,7 @@
       {
         "name": "fields",
         "type": "string",
-        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: timestampCreatedAt, mergedAt, closedAt, title, description, url, state, owner, repoName, repoHost, provider, id, files, clone, number, merged, draft, approved, authoredByMe, headBranch, baseBranch, headRepo."
+        "desc": "Optional comma-separated list of top-level fields to keep on each result. Recommended for list/overview calls: omitting it returns every field, which on large lists can overflow the context window. Omit only when you need the full objects. Available fields: timestampCreatedAt, updatedAt, mergedAt, closedAt, title, description, url, state, owner, repoName, repoHost, provider, id, nodeId, repositoryId, projectId, organization, files, clone, number, merged, draft, approved, authoredByMe, headBranch, baseBranch, headRepo, author, assignees, reviews, reviewDecision, mergeableState, buildStatuses, baseRef, headRef, additions, deletions, currentViewer."
       },
       {
         "name": "is_closed",
@@ -548,7 +563,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider. Default is GITHUB"
+        "desc": "Specify the git provider"
       },
       {
         "name": "repository_name",
@@ -599,7 +614,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider. Default is GITHUB"
+        "desc": "Specify the git provider"
       },
       {
         "name": "repository_name",
@@ -645,7 +660,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider. Default is GITHUB"
+        "desc": "Specify the git provider"
       },
       {
         "name": "pull_request_id",
@@ -681,7 +696,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider. Default is GITHUB"
+        "desc": "Specify the git provider"
       },
       {
         "name": "pull_request_id",
@@ -712,7 +727,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider. Default is GITHUB"
+        "desc": "Specify the git provider"
       },
       {
         "name": "pull_request_files",
@@ -753,7 +768,7 @@
       {
         "name": "provider",
         "type": "string",
-        "desc": "Specify the git provider. Default is GITHUB"
+        "desc": "Specify the git provider"
       },
       {
         "name": "ref",
